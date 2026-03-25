@@ -1,0 +1,53 @@
+<%- include("../head.partial.ejs") %>
+<h1><%= title %></h1>
+<% if (user) {%>
+<p><%= description %></p>
+  <form action="/" method="POST">
+    <input
+      type="text"
+      name="formText"
+      id="formText"
+      required
+      minlength="1"
+      maxlength="500"
+      />
+      
+    <button type="submit">Dodaj</button>
+  </form>
+</ul><br>
+<a href="/logout" ><button type="button">Wyloguj</button></a>
+<% } else { %>
+  <p>Zaloguj się, aby dodawać wiadomości.</p>
+  <a href="/login" ><button type="button">Zaloguj się</button></a>
+  <a href="/register" ><button type="button">Utwórz nowe konto</button></a>
+<% } %>
+
+<h3>Wiadomości:</h3>
+<ul>
+    <% items.forEach(msg => { %>
+      <% if (user && (user.role === "admin" || user.id === msg.user_id)) { %>
+        <li><form action="/edit" method="POST">
+        <input type="hidden" name="id" value="<%= msg.id %>">
+        <input
+          type="text"
+          name="message"
+          value="<%= msg.message %>"
+          required
+          minlength="1"
+          maxlength="500"
+        />
+        <button type="submit">Zapisz</button>
+      </form>
+
+      <form action="/delete" method="POST">
+        <input type="hidden" name="id" value="<%= msg.id %>">
+        <button type="submit">Usuń</button>
+      </form></li>
+        <% } else { %>
+          <li>
+          <%= msg.message %>
+          </li>
+        <% } %>
+    <% }) %>
+    </ul>
+<%- include("../foot.partial.ejs") %>

@@ -1,0 +1,26 @@
+<%- include("../head.partial.ejs") %>
+<h1><%= title %></h1>
+<form action="/register" method="POST">
+    <input
+      type="text"
+      name="User_name"
+      id="User_name"
+      required
+      minlength="3"
+      maxlength="500"
+      placeholder="Nazwa użytkownika"
+      /><br>
+          <input
+      type="password"
+      name="Password"
+      id="Password"
+      required
+      minlength="3"
+      maxlength="500"
+      placeholder="Hasło"
+      /><br>
+      
+    <button type="submit">Utwórz</button>
+  </form>
+<%- include("../foot.partial.ejs") %>
+
