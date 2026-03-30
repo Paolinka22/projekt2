@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #aadaf7;
+}
+h1{
+    color: #333;
+}
+button{
+    padding: 5px 10px;
+    border-radius: 10%;
+    border: 0;
+    cursor: pointer;
+    background-color: rgb(30, 30, 112);
+    color: aliceblue;
+    margin: 5px;
+}
+button:hover{
+    background-color: aliceblue;
+    color: rgb(30, 30, 112);
+    transition: 0.5s;
+    border: 5px;
+    border-color: black;
+}
+li{
+    margin-bottom: 10px;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    width: 400px;
+}
+ul{
+    overflow: scroll;
+}
+.editdel {
+  display: flex;
+  flex-flow: row wrap;
+
+
+}
+.contener{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    height: 600px;
+    background-color: aliceblue;
+    padding: 15px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+input{
+    width: 400px;
+    height: 40px;
+}
+.loguj{
+    width: 400px;
+    height: 50px;
+    margin-top: 15px;
+    font-size: larger;
+}
+.butt1{
+    height: 30px;
+    width: 400px;
+    border-radius: 0;
+}
