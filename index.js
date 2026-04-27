@@ -1,6 +1,6 @@
 import express from "express";
 import morgan from "morgan";
-import bcrypt from "bcrypt";
+import argon2 from "argon2";
 import cookieParser from "cookie-parser";
 import db, { db_ops, createSession, getSession } from "./bd.js";
 
@@ -57,7 +57,7 @@ app.get("/login", (req, res) => {
 app.post("/register", async (req, res) => {
   try {
     const { User_name, Password } = req.body;
-    const hash = await bcrypt.hash(Password.trim(), 10);
+    const hash = await argon2.hash(Password.trim());
     if (!User_name || !Password) {
       return res.send("Brak danych");
     }
@@ -76,7 +76,7 @@ app.post("/login", async (req, res) => {
   const user = db_ops.get_user.get(User_name.trim());
   if (!user) return res.send("Zła nazwa użytkownika");
 
-  const matchPassword = await bcrypt.compare(Password.trim(), user.password);
+  const matchPassword = await argon2.verify(user.password, Password.trim());
   if (!matchPassword) return res.send("Złe hasło");
 
   const session = createSession(user.id);
