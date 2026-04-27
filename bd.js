@@ -1,5 +1,5 @@
 import Database from "better-sqlite3";
-import bcrypt from "bcrypt";
+import argon2 from "argon2";
 import { randomBytes } from "crypto";
 
 const db_path = "./db.sqlite";
@@ -36,49 +36,56 @@ export const db_ops = {
     `INSERT INTO messages (message, user_id)
         VALUES (?, ?) RETURNING id, message, user_id;`
   ),
-    get_messages: db.prepare(
-      `SELECT * FROM messages ORDER BY id DESC;`
+  get_messages: db.prepare(
+    `SELECT * FROM messages ORDER BY id DESC;`
   ),
-    update_messages: db.prepare(
-      `UPDATE messages SET message = ? WHERE id = ?;`
+  update_messages: db.prepare(
+    `UPDATE messages SET message = ? WHERE id = ?;`
   ),
-    delete_messages: db.prepare(
-      `DELETE FROM messages WHERE id = ?;`
+  delete_messages: db.prepare(
+    `DELETE FROM messages WHERE id = ?;`
   ),
-    create_user: db.prepare(
-      `INSERT INTO users (username, password, role)
+  create_user: db.prepare(
+    `INSERT INTO users (username, password, role)
       VALUES (?, ?, ?);`
   ),
-    get_user: db.prepare(
-      `SELECT id, username, password, role FROM users WHERE username = ?;`
+  get_user: db.prepare(
+    `SELECT id, username, password, role FROM users WHERE username = ?;`
   ),
-    create_session: db.prepare(
+  create_session: db.prepare(
     `INSERT INTO fc_session (id, user_id, created_at) VALUES (?, ?, ?);`
   ),
   get_session: db.prepare(
     "SELECT id, user_id, created_at from fc_session WHERE id = ?;"
   ),
   get_user_id: db.prepare(
-  `SELECT id, username, password, role FROM users WHERE id = ?;`
-)
+    `SELECT id, username, password, role FROM users WHERE id = ?;`
+  )
 };
 
-const countUsers = db.prepare("SELECT COUNT(*) as counter FROM users").get().counter;
-console.log("Users count:", countUsers);
-if(countUsers === 0){
+async function seedUsers() {
+  const countUsers = db.prepare("SELECT COUNT(*) as counter FROM users").get().counter;
+  console.log("Users count:", countUsers);
 
-  const insert = db.transaction(() => {
-      db_ops.create_user.run("admin", bcrypt.hashSync("admin123", 10), "admin");
-      db_ops.create_user.run("user1", bcrypt.hashSync("user123", 10), "user");
-      db_ops.create_user.run("user2", bcrypt.hashSync("user456", 10), "user");
+  if (countUsers === 0) {
+    const adminPass = await argon2.hash("admin123");
+    const user1Pass = await argon2.hash("user123");
+    const user2Pass = await argon2.hash("user456");
+
+    const insert = db.transaction(() => {
+      db_ops.create_user.run("admin", adminPass, "admin");
+      db_ops.create_user.run("user1", user1Pass, "user");
+      db_ops.create_user.run("user2", user2Pass, "user");
     });
     insert();
+  };
 }
+await seedUsers();
 
 console.log("POPULATE_DB =", process.env.POPULATE_DB);
 if (process.env.POPULATE_DB === "1") {
   const count = db.prepare("SELECT COUNT(*) AS licz FROM messages").get().licz;
-    console.log("Messages count:", count);
+  console.log("Messages count:", count);
   if (count === 0) {
     console.log("Populating...");
     const seed = db.prepare("INSERT INTO messages (message, user_id) VALUES (?, 2);");
@@ -96,8 +103,8 @@ if (process.env.POPULATE_DB === "1") {
     });
     insertMany();
   }
- }
- 
+}
+
 export function createSession(userId) {
   const sessionId = randomBytes(16).toString("hex");
   const createdAt = Date.now();
@@ -110,4 +117,4 @@ export function getSession(sessionId) {
   return db_ops.get_session.get(sessionId);
 }
 
- export default db;
+export default db;
