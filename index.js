@@ -55,16 +55,44 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-  try {
-    const { User_name, Password } = req.body;
-    const hash = await argon2.hash(Password.trim());
-    if (!User_name || !Password) {
-      return res.send("Brak danych");
+    try {
+    const { User_name, Password, ConfPass } = req.body;
+    if (!User_name || !Password || !ConfPass) {
+      return res.status(400).send("Brak danych");
     }
-    
-    db_ops.create_user.run(User_name.trim(), hash, "user");
+
+    const username = User_name.trim();
+    const password = Password.trim();
+    const conf = ConfPass.trim();
+
+    if (username.length < 3) {
+      return res.status(400).send("Login za krótki");
+    }
+
+    if (password.length < 8) {
+      return res.status(400).send("Hasło musi mieć minimum 8 znaków");
+    }
+
+    const strongPassword =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+    if (!strongPassword.test(password)) {
+      return res.status(400).send("Hasło jest za słabe");
+    }
+
+    if (password !== conf) {
+      return res.status(400).send("Hasła nie są identyczne");
+    }
+
+    const existing = db_ops.get_user.get(username);
+    if (existing) {
+      return res.status(400).send("Użytkownik już istnieje");
+    }
+
+    const hash = await argon2.hash(password);
+
+    db_ops.create_user.run(username, hash, "user");
     res.redirect("/login");
-     } catch (err) {
+  } catch (err) {
     console.error(err);
     res.status(500).send("Database error");
   }

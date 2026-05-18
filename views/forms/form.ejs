@@ -12,7 +12,7 @@
       maxlength="500"
       />
       
-    <button type="submit">Dodaj</button>
+    <button type="submit" class="add">Dodaj</button>
   </form>
 </ul><br>
 <a href="/logout" ><button type="button" class="butt1">Wyloguj</button></a>
@@ -36,12 +36,12 @@
           minlength="1"
           maxlength="500"
         />
-        <button type="submit" class="butt1">Zapisz</button>
+        <button type="submit" class="save">Zapisz</button>
       </form>
 
       <form action="/delete" method="POST" class="editdel">
         <input type="hidden" name="id" value="<%= msg.id %>">
-        <button type="submit" class="butt1">Usuń</button>
+        <button type="submit" class="delete">Usuń</button>
       </form></li>
         <% } else { %>
           <li>

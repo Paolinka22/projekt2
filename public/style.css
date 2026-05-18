@@ -33,10 +33,16 @@ ul{
     overflow: scroll;
 }
 .editdel {
-  display: flex;
-  flex-flow: row wrap;
-
-
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+.editdel input{
+    width: 220px;
+    height: 28px;
+    padding: 4px;
+    font-size: 13px;
 }
 .contener{
     display: flex;
@@ -64,7 +70,17 @@ input{
     font-size: larger;
 }
 .butt1{
-    height: 30px;
+    height: 40px;
     width: 400px;
-    border-radius: 0;
+    border-radius: 5px;
+}
+.save, .delete, .add{
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.2s;
+    width: auto;
+    height: 40px;
+    width: 65px;
 }
