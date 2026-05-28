@@ -66,7 +66,7 @@ Przy pierwszym uruchomieniu aplikacja:
 
 ```bash
 git clone https://github.com/Paolinka22/projekt2.git
-cd projekt04
+cd projekt2
 ```
 
 ## 3.2. Instalacja zależności
