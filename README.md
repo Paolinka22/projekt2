@@ -1,4 +1,4 @@
-# Guestbook App — Express + SQLite
+# Forum społecznościowe — Express + SQLite
 
 Aplikacja umożliwia użytkownikom tworzenie wpisów pamiątkowych po zalogowaniu.  
 Każdy użytkownik może zarządzać własnymi wiadomościami, natomiast administrator posiada pełne uprawnienia do moderacji wszystkich wpisów.
@@ -12,15 +12,15 @@ Projekt wykorzystuje:
 
 ---
 
-# Funkcjonalności
+# 1. Funkcjonalności
 
-## Rejestracja i logowanie użytkowników
+## 1.1 Rejestracja i logowanie użytkowników
 - tworzenie nowych kont
 - walidacja loginu i hasła
 - bezpieczne hashowanie haseł (`argon2`)
 - obsługa sesji użytkownika przy pomocy cookies
 
-## Zarządzanie wiadomościami
+## 1.2 Zarządzanie wiadomościami
 Niezalogowany użytkownik może:
 - tylko przeglądać treści zamieszczone przez innych
 
@@ -33,13 +33,13 @@ Administrator może:
 - usuwać dowolne wiadomości
 - edytować dowolne wiadomości
 
-## Dynamiczna strona główna
+## 1.3 Dynamiczna strona główna
 Strona główna:
 - wyświetla wszystkie zapisane wiadomości
 - renderuje dane dynamicznie przy użyciu EJS
 - pokazuje różne opcje w zależności od zalogowanego użytkownika
 
-## Automatyczne seedowanie danych
+## 1.4 Automatyczne seedowanie danych
 Przy pierwszym uruchomieniu aplikacja:
 - tworzy tabele w bazie danych
 - dodaje testowych użytkowników
@@ -47,7 +47,7 @@ Przy pierwszym uruchomieniu aplikacja:
 
 ---
 
-# Technologie
+# 2. Technologie
 
 - Node.js
 - Express 5
@@ -60,22 +60,22 @@ Przy pierwszym uruchomieniu aplikacja:
 
 ---
 
-# Instalacja
+# 3. Instalacja
 
-## 1. Klonowanie repozytorium
+## 3.1. Klonowanie repozytorium
 
 ```bash
-git clone 
+git clone https://github.com/Paolinka22/projekt2.git
 cd projekt04
 ```
 
-## 2. Instalacja zależności
+## 3.2. Instalacja zależności
 
 ```bash
 npm install
 ```
 
-## 3. Uruchomienie aplikacji
+## 3.3 Uruchomienie aplikacji
 
 ```bash
 node index.js
@@ -89,7 +89,7 @@ http://localhost:8000
 
 ---
 
-# Tryb developerski — przykładowe dane
+# 4. Tryb developerski — przykładowe dane
 
 Aby automatycznie wypełnić bazę przykładowymi wiadomościami:
 
@@ -101,16 +101,16 @@ Przykładowe wiadomości zostaną dodane tylko wtedy, gdy tabela `messages` jest
 
 ---
 
-# Testowi użytkownicy
+# 5. Testowi użytkownicy
 
-## Administrator
+## 5.1 Administrator
 
 ```txt
 login: admin
 hasło: admin123
 ```
 
-## Użytkownicy
+## 5.2 Użytkownicy
 
 ```txt
 login: user1
@@ -124,7 +124,7 @@ hasło: user456
 
 ---
 
-# Struktura projektu
+# 6. Struktura projektu
 
 ```txt
 project/
@@ -142,9 +142,9 @@ project/
 
 ---
 
-# Obsługiwane ścieżki
+# 7. Obsługiwane ścieżki
 
-## GET
+## 7.1 GET
 
 | Ścieżka | Opis |
 |---|---|
@@ -153,7 +153,7 @@ project/
 | `/login` | Formularz logowania |
 | `/logout` | Wylogowanie użytkownika |
 
-## POST
+## 7.2 POST
 
 | Ścieżka | Opis |
 |---|---|
@@ -165,7 +165,7 @@ project/
 
 ---
 
-# Walidacja danych
+# 8. Walidacja danych
 
 Podczas rejestracji aplikacja sprawdza:
 - minimalną długość loginu
@@ -179,23 +179,10 @@ Podczas rejestracji aplikacja sprawdza:
 
 ---
 
-# Bezpieczeństwo
+# 9. Bezpieczeństwo
 
 Projekt wykorzystuje:
 - hashowanie haseł przy użyciu Argon2
 - sesje przechowywane w cookies
 - autoryzację użytkowników
 - sprawdzanie właściciela wiadomości przed edycją/usunięciem
-
----
-
-# Możliwe rozszerzenia projektu
-
-- CSRF protection
-- rate limiting
-- wygasanie sesji
-- panel administratora
-- paginacja wiadomości
-- REST API
-- Docker
-- testy automatyczne
