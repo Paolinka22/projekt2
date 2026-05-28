@@ -129,13 +129,22 @@ hasło: user456
 ```txt
 project/
 │
-├── public/              # Pliki statyczne
-├── views/               # Widoki EJS
-│   └── forms/
+├── public/                     # Pliki statyczne
+│   ├── favicon.ico
+│   └── style.css
 │
-├── index.js             # Główny plik aplikacji
-├── bd.js                # Obsługa bazy danych i sesji
-├── db.sqlite            # Baza SQLite
+├── views/                      # Widoki EJS
+│   ├── forms/                  # Formularze
+│   │   ├── form.ejs
+│   │   ├── login.ejs
+│   │   └── new_user.ejs
+│   │
+│   ├── head.partial.ejs
+│   └── foot.partial.ejs
+│
+├── index.js                    # Główny plik aplikacji
+├── bd.js                       # Obsługa bazy danych i sesji
+├── db.sqlite                   # Baza SQLite
 ├── package.json
 └── README.md
 ```
