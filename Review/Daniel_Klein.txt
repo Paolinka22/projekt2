@@ -1,0 +1,5 @@
+
+- Opis projektu powinien powiedzieć więcej o funkcjonalności projektu, a nie o tym, jaki to rodzaj aplikacji
+- Wprowadź strukturę do dokumentu, sekcje powinny mieć odpowiednie nagłówki, poszukaj informacji na temat składni Markdown, żeby odpowiednio sformatować dokument
+- Brak informacji o instalacji zaleźności
+- Możesz dodać trochę dokumentacji, np. info o obsługiwanych ścieżkach etc.
