@@ -57,6 +57,7 @@ Przy pierwszym uruchomieniu aplikacja:
 - Argon2
 - cookie-parser
 - Morgan
+- Express-rate-limit
 
 ---
 
@@ -92,11 +93,18 @@ http://localhost:8000
 # 4. Tryb developerski — przykładowe dane
 
 Aby automatycznie wypełnić bazę przykładowymi wiadomościami:
-
+## Linux/macOS
 ```bash
 POPULATE_DB=1 node index.js
 ```
-
+## Windows Powershell
+```bash
+$env:POPULATE_DB=1 node index.js
+```
+## Windows CMD
+```bash
+set POPULATE_DB=1 && node index.js
+```
 Przykładowe wiadomości zostaną dodane tylko wtedy, gdy tabela `messages` jest pusta.
 
 ---
