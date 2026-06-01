@@ -142,7 +142,7 @@ project/
 │   ├── head.partial.ejs
 │   └── foot.partial.ejs
 │
-│review/
+├── Review/                     # Recenzje
 │   ├── Artur_Wlodarczyk.txt
 │   ├── Daniel_Klein.txt
 │   └── Kuba_Brandenburg.txt
