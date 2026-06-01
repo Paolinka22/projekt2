@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import argon2 from "argon2";
 import cookieParser from "cookie-parser";
+import rateLimit from "express-rate-limit";
 import db, { db_ops, createSession, getSession } from "./bd.js";
 
 const port = 8000;
@@ -11,9 +12,17 @@ const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
 const app = express();
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true,  limit: "10kb"}));
 app.use(morgan("dev"));
 app.use(cookieParser());
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: "Za dużo nie udanuch prób. Spróbuj ponownie za 15 minut."
+});
 
 app.use((req, res, next) => {
   const sessionId = req.cookies[SESSION_COOKIE];
@@ -45,12 +54,14 @@ app.get("/", (req, res) => {
 });
 app.get("/register", (req, res) => {
   res.render("forms/new_user", {
-    title: "Rejestracja użytkownika"
+    title: "Rejestracja użytkownika",
+    error: null
   });
 });
 app.get("/login", (req, res) => {
   res.render("forms/login", {
-    title: "Logowanie"
+    title: "Logowanie",
+    error: null
   });
 });
 
@@ -65,27 +76,42 @@ app.post("/register", async (req, res) => {
     const password = Password.trim();
     const conf = ConfPass.trim();
 
-    if (username.length < 3) {
-      return res.status(400).send("Login za krótki");
+    if (username.length < 3 || username.length > 100) {
+      return res.status(400).render("forms/new_user", {
+      title: "Rejestracja",
+      error: "Login jest za krótki lub za długi"
+    });
     }
 
     if (password.length < 8) {
-      return res.status(400).send("Hasło musi mieć minimum 8 znaków");
+      return res.status(400).render("forms/new_user", {
+      title: "Rejestracja",
+      error: "Hasło jest za krótkie lub za długie"
+    });
     }
 
     const strongPassword =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
     if (!strongPassword.test(password)) {
-      return res.status(400).send("Hasło jest za słabe");
+      return res.status(400).render("forms/new_user", {
+      title: "Rejestracja",
+      error: "Hasło jest za słabe"
+});
     }
 
     if (password !== conf) {
-      return res.status(400).send("Hasła nie są identyczne");
+      return res.status(400).render("forms/new_user", {
+      title: "Rejestracja",
+      error: "Hasła nie są identyczne"
+    });
     }
 
     const existing = db_ops.get_user.get(username);
     if (existing) {
-      return res.status(400).send("Użytkownik już istnieje");
+      return res.status(400).render("forms/new_user", {
+      title: "Rejestracja",
+      error: "Użytkownik już istnieje"
+    });
     }
 
     const hash = await argon2.hash(password);
@@ -97,22 +123,44 @@ app.post("/register", async (req, res) => {
     res.status(500).send("Database error");
   }
 });
-app.post("/login", async (req, res) => {
+app.post("/login", loginLimiter, async (req, res) => {
   const { User_name, Password } = req.body;
-  if (!User_name || !Password) return res.send("Brak danych");
+  if (!User_name || !Password) {
+      return res.status(400).render("forms/login", {
+      title: "Logowanie",
+      error: "Brak danych"
+    });
+  };
 
   const user = db_ops.get_user.get(User_name.trim());
-  if (!user) return res.send("Zła nazwa użytkownika");
+  if (!user) {
+      return res.status(400).render("forms/login", {
+      title: "Logowanie",
+      error: "Zły login"
+    });
+  };
 
   const matchPassword = await argon2.verify(user.password, Password.trim());
-  if (!matchPassword) return res.send("Złe hasło");
+  if (!matchPassword) {
+      return res.status(400).render("forms/login", {
+      title: "Logowanie",
+      error: "Nieprawidłowe hasło"
+    });
+  };
+
+  db_ops.delete_user_sessions.run(user.id);
 
   const session = createSession(user.id);
   res.cookie(SESSION_COOKIE, session.id, { maxAge: ONE_WEEK, httpOnly: true, secure: false });
 
   res.redirect("/");
 });
+
 app.get("/logout", (req, res) => {
+  const sessionId =req.cookies[SESSION_COOKIE];
+  if (sessionId) {
+    db_ops.delete_session.run(sessionId);
+  }
   res.clearCookie(SESSION_COOKIE);
   res.redirect("/");
 });

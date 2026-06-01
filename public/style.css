@@ -14,11 +14,12 @@ button{
     background-color: rgb(30, 30, 112);
     color: aliceblue;
     margin: 5px;
+    transition: 0.2s;
 }
 button:hover{
-    background-color: aliceblue;
-    color: rgb(30, 30, 112);
-    transition: 0.5s;
+    background-color: rgb(62, 62, 226);
+    color: aliceblue;
+    transition: 0.2s;
     border: 5px;
     border-color: black;
 }
@@ -83,4 +84,9 @@ input{
     width: auto;
     height: 40px;
     width: 65px;
+}
+.error{
+    font-weight: 600;
+    color: red;
+    margin: 5px;
 }

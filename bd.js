@@ -60,6 +60,12 @@ export const db_ops = {
   ),
   get_user_id: db.prepare(
     `SELECT id, username, password, role FROM users WHERE id = ?;`
+  ),
+  delete_session: db.prepare(
+  `DELETE FROM fc_session WHERE id = ?`
+  ),
+  delete_user_sessions: db.prepare(
+  `DELETE FROM fc_session WHERE user_id = ?`
   )
 };
 
@@ -112,9 +118,16 @@ export function createSession(userId) {
   return { id: sessionId, user_id: userId, created_at: createdAt };
 }
 
+const SESSION_LIFETIME = 7 * 24 * 60 * 60 * 1000;
+
 export function getSession(sessionId) {
-  if (!sessionId) return null;
-  return db_ops.get_session.get(sessionId);
+  const session = db_ops.get_session.get(sessionId);
+  if (!session) return null;
+  if (Date.now() - session.created_at > SESSION_LIFETIME) {
+    db_ops.delete_session.run(sessionId);
+    return null;
+  }
+  return session;
 }
 
 export default db;
