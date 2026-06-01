@@ -142,6 +142,11 @@ project/
 │   ├── head.partial.ejs
 │   └── foot.partial.ejs
 │
+│review/
+│   ├── Artur_Wlodarczyk.txt
+│   ├── Daniel_Klein.txt
+│   └── Kuba_Brandenburg.txt
+│
 ├── index.js                    # Główny plik aplikacji
 ├── bd.js                       # Obsługa bazy danych i sesji
 ├── db.sqlite                   # Baza SQLite
