@@ -1,0 +1,51 @@
++ Czytelny README  
+
+- Lekki błąd z wersjami po instalacji  
+npm outdated:
+Package         Current   Wanted   Latest  Location                     Depended by
+better-sqlite3   12.8.0  12.10.0  12.10.0  node_modules/better-sqlite3  projekt2
+ejs              3.1.10   3.1.10    6.0.1  node_modules/ejs             projekt2
+
+npm audit:
+qs  6.11.1 - 6.15.1
+Severity: moderate
+qs ma podatność typu DoS (możliwe zawieszenie przez stringify)
+fix dostępny przez npm audit fix
+
+2 drobne wersje do tyłu z better-sqlite3 i kilka wersji do tyłu z ejs, nie powoduje to krytycznych błędów  
++ npm audit łatwo naprawiony (npm audit fix)
+
+- Brak trybu ciemnego  
++ Baza danych tworzy się automatycznie  
+
+- POPULATE_DB=1 node index.js nie działa na Windows (problem PowerShell), jedynie na Unix
+
+$env:POPULATE_DB=1; node index.js działa na Windows, jednak nie ma tego w Readme
+
++ Łatwa edycja danych  
++ Dodawanie, usuwanie i edycja wpisów działa poprawnie  
+
+- Trochę ciasny ekran rejestracji  
+- Błędy walidacji hasła pokazują się na osobnej stronie  
+
++ Test SQL injection (admin'--) nie daje uprawnień  
++ Limit długości nazwy użytkownika  
+
+- bardzo długie hasło powtórzone (na stronie do rejestracji) powoduje PayloadTooLargeError  
+
+- błędy logowania na pustej stronie  
++ trochę ogranicza spam prób logowania  
+
+- możliwy replay sesji po kradzieży cookie  
+
+- sesje nie są usuwane po wylogowaniu  
+
+- brak rate limiting (bruteforce możliwy)
+
+- CPU spike przy spamie logowania (~30%)
+
+- największy problem: brak usuwania sesji po logout  
+
++ usunięcie danych przez fetch("/delete", {id:1}) zwraca 403 (brak IDOR)  
+
+Podsumowanie: system działa, SQL injection zabezpieczone, Argon2 OK, ale sesje i limity są głównym problemem bezpieczeństwa.

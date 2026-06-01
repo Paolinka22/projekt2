@@ -1,0 +1,17 @@
+README:
+- Obszerne, ale konkretne
+- Przemieściłbym informacje o otwieraniu i setupowaniu projektu na początek,
+przed informację o funkcjonalności projektu
+UX:
+- Przyciski mają zbyt długi transition na animacji przy najechaniu, krótsza wyglądałaby lepiej, bardziej dynamicznie.
+Ewentualnie można dodać animację odwrotną przy zjeżdżaniu z przycisku, aby skok między kolorami był mniej drastyczny
+- Przyciski po najechaniu nabierają kolor tła, zlewają się z nim co powoduje problemy z czytelnością strony
+- Przy tworzeniu konta nie ma komunikatu o zbyt krótkim loginie
+- Przy wpisaniu nieprawidłowego hasła, komunikat to osobna strona bez stylów i przycisku powrotu,
+najlepiej aby komunikat pokazywał się od razu przy formularzu
+Kod:
+- Zdaje się być w większości poprawny i optymalny
+- Czytelny
+- Ładnie zorganizowane i posortowane pliki
+
+	Ogółem aplikacja robi to co ma robić, kod działa poprawnie i jest wystarczającej jakości. Jedyne problemy są estetyczne (animacje przycisków i komunikaty błędów przy rejestracji/logowaniu). Aplikacja zdaje się dość podstawowa, lecz spełnia wszystkie wymogi, a to się liczy.

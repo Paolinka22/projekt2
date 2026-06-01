@@ -1,0 +1,15 @@
+- README:
+- To jest wizytówka projektu, dobrze by było gdyby README było dopieszczone.
+- Opis projektu powinien powiedzieć więcej o funkcjonalności projektu, a nie o tym, jaki to rodzaj aplikacji
+- Wprowadź strukturę do dokumentu, sekcje powinny mieć odpowiednie nagłówki, poszukaj informacji na temat składni Markdown, żeby odpowiednio sformatować dokument
+- Brak informacji o instalacji zaleźności
+- Możesz dodać trochę dokumentacji, np. info o obsługiwanych ścieżkach etc.
+- UX:
+- Podczas rejestracji powinno być dodatkowe pole z potwierdzeniem hasła na wypadek literówki
+- Kontrolki do edycji/usuwania są wizualnie fatalne - zajmują za dużo przestrzeni i sprawiają, że cała strona wygląda mało czytelnie
+- Brak walidacji długości hasła po stronie serwera
+- Funkcjonalność:
+- Aplikacja robi to co powinna i nie natrafiłem na grubsze błędy
+- KOD:
+- bcrypt jest przestarzały, przerzuć się na argon2
+- Kod jest względnie czytelny
